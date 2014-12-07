@@ -1,28 +1,31 @@
 $(function () {
     function e() {
-        r(A, "bounceInDown"), A.show(), C && (C = !1, D ? g(["../images/buy_btn_small.png", "../images/restart_btn_small.png", "../images/out_small.png", "../images/share_info.png", "../images/share_arrow_small.png", "../images/congrats_small.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/small_ending@2x.png"]) : g(["../images/buy_btn.png", "../images/restart_btn.png", "../images/out.png", "../images/share_info.png", "../images/share_arrow.png", "../images/congrats.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/normal_ending@2x.png"]), $.getJSON("data/data.json", function (e) {
-            $.extend(w, e.data)
-        }))
+        trackEvent(["welcomeSection", welcomeSection]);
+        switchTo(welcomeSection, "bounceInDown"), welcomeSection.show(), C && (C = !1, D ? g(["../images/buy_btn_small.png", "../images/restart_btn_small.png", "../images/out_small.png", "../images/share_info.png", "../images/share_arrow_small.png", "../images/congrats_small.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/small_ending@2x.png"]) : g(["../images/buy_btn.png", "../images/restart_btn.png", "../images/out.png", "../images/share_info.png", "../images/share_arrow.png", "../images/congrats.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/normal_ending@2x.png"]),
+            $.getJSON("data/data.json", function (e) {
+                $.extend(w, e.data);
+            })
+        )
     }
 
     function showStartPage() {
         window.navigator.msPointerEnabled || "desktop" === I ? $(".start_btn").on("click", function () {
-            r(A, "pressRelease", function () {
-                A.hide(), $(".start_btn").data("animating", !1)
+            switchTo(welcomeSection, "pressRelease", function () {
+                welcomeSection.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
-                i(E)
+                viewQuestion(E)
             }, 100), S++, trackEvent("click_start_btn", S)
         }) : $(".start_btn").on("touchstart", function () {
-            $(this).data("animating") || (A.addClass("pressDown"), $(this).data("canceled", !1), $(this).addClass("hover"))
+            $(this).data("animating") || (welcomeSection.addClass("pressDown"), $(this).data("canceled", !1), $(this).addClass("hover"))
         }).on("touchmove", function (e) {
-            e.preventDefault(), $(this).data("animating") || t(e, 10) || ($(this).data("canceled", !0).removeClass("hover"), A.removeClass("pressDown"))
+            e.preventDefault(), $(this).data("animating") || t(e, 10) || ($(this).data("canceled", !0).removeClass("hover"), welcomeSection.removeClass("pressDown"))
         }).on("touchcancel", function () {
-            $(this).data("canceled", !0).removeClass("hover"), A.removeClass("pressDown")
+            $(this).data("canceled", !0).removeClass("hover"), welcomeSection.removeClass("pressDown")
         }).on("touchend", function () {
-            $(this).data("canceled") || $(this).data("animating") || ($(this).data("animating", !0), A.removeClass("pressDown"), r(A, "pressRelease", function () {
-                A.hide(), $(".start_btn").data("animating", !1)
+            $(this).data("canceled") || $(this).data("animating") || ($(this).data("animating", !0), welcomeSection.removeClass("pressDown"), switchTo(welcomeSection, "pressRelease", function () {
+                welcomeSection.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
-                i(E)
+                viewQuestion(E)
             }, 100), $(this).removeClass("hover"), S++, trackEvent("click_start_btn", S))
         })
     }
@@ -33,11 +36,11 @@ $(function () {
         return o > -n && t + n > o && a > -n && i + n > a
     }
 
-    function i(e, n) {
+    function viewQuestion(e, n) {
         var t = _();
         $(".money", t).html(k + " 万"), $(".title", t).html("第" + y + "题"), $(".describe", t).html(e.describe), h(t);
         $(".choice", t);
-        $("button[data-choice=A]", t).html(e.A.describe), $("button[data-choice=B]", t).html(e.B.describe), e.C && e.C.describe ? $("button[data-choice=C]", t).html(e.C.describe) : $("button[data-choice=C]", t).remove(), r(t, "moveInRight", function () {
+        $("button[data-choice=A]", t).html(e.A.describe), $("button[data-choice=B]", t).html(e.B.describe), e.C && e.C.describe ? $("button[data-choice=C]", t).html(e.C.describe) : $("button[data-choice=C]", t).remove(), switchTo(t, "moveInRight", function () {
             o(t), n && $(".income", t).html(n).show()
         }), t.css("visibility", "visible"), trackEvent("view_question", y)
     }
@@ -55,13 +58,13 @@ $(function () {
             } else if (nextQuestion = w[d.next]) {
                 y++;
                 var l = E.annualGain;
-                l += parseInt(k * E.interest), k += l, E = nextQuestion, 8 === y && (l = d.income), i(nextQuestion, l)
+                l += parseInt(k * E.interest), k += l, E = nextQuestion, 8 === y && (l = d.income), viewQuestion(nextQuestion, l)
             } else {
                 "不退休，让我再活五百年" === d.describe && (d.ending = Math.random() < .5 ? "e_3_19_2_1" : "e_3_19_2_2");
                 var m = w[d.ending];
                 s(m)
             }
-            r(e, "moveOutLeft", function () {
+            switchTo(e, "moveOutLeft", function () {
                 e.remove()
             })
         };
@@ -88,19 +91,19 @@ $(function () {
                 var _ = E.annualGain;
                 _ += parseInt(k * E.interest), k += _, E = nextQuestion;
                 var g = $(".success-msg", t);
-                r(g, "zoomIn"), t.addClass("success").show(), setTimeout(function () {
+                switchTo(g, "zoomIn"), t.addClass("success").show(), setTimeout(function () {
                     t.addClass("dark")
                 }, 0), $("button", g).one(l, function () {
-                    t.removeClass("dark"), r(g, "zoomOut", function () {
-                        t.hide().removeClass("success"), i(nextQuestion, _)
+                    t.removeClass("dark"), switchTo(g, "zoomOut", function () {
+                        t.hide().removeClass("success"), viewQuestion(nextQuestion, _)
                     }), a.remove(), m(), trackEvent("click_continue_btn")
                 })
             } else {
                 var g = $(".fail-msg", t);
-                r(g, "zoomIn"), t.addClass("fail").show(), setTimeout(function () {
+                switchTo(g, "zoomIn"), t.addClass("fail").show(), setTimeout(function () {
                     t.addClass("dark")
                 }, 0), $("button", g).one(l, function () {
-                    t.removeClass("dark"), a.remove(), r(g, "zoomOut", function () {
+                    t.removeClass("dark"), a.remove(), switchTo(g, "zoomOut", function () {
                         t.hide().removeClass("fail")
                     }), setTimeout(function () {
                         s(e, !0)
@@ -112,7 +115,7 @@ $(function () {
         c.on("touchmove", function (e) {
             e.preventDefault()
         }).on(l, u), d(function () {
-            a.appendTo(document.body), r(a, "bounceInDown"), a.css("visibility", "visible")
+            a.appendTo(document.body), switchTo(a, "bounceInDown"), a.css("visibility", "visible")
         }), trackEvent("view_revive_question", y)
     }
 
@@ -120,15 +123,15 @@ $(function () {
         var n = $(".ending_title", T), t = $(".ending_card", T);
         $(".ending_info").html(e.info), e.isSuccess ? n.addClass("success") : n.removeClass("success"), D ? t.removeClass().addClass("ending_card z-icon-ending_" + e.type + "_small") : t.removeClass().addClass("ending_card z-icon-ending_" + e.type);
         var i = $("section[class=question]");
-        i.length ? (r(i, "moveOutLeft", function () {
+        i.length ? (switchTo(i, "moveOutLeft", function () {
             i.remove()
-        }), e.isSuccess ? (r(T, "moveInRight", function () {
+        }), e.isSuccess ? (switchTo(T, "moveInRight", function () {
             showResultPage()
         }), T.show()) : d(function () {
-            r(T, "bounceInDown", function () {
+            switchTo(T, "bounceInDown", function () {
                 showResultPage()
             }), T.show()
-        })) : (r(T, "fadeIn", function () {
+        })) : (switchTo(T, "fadeIn", function () {
             showResultPage()
         }), T.show());
         var o = w.shareEndings[e.type];
@@ -138,7 +141,7 @@ $(function () {
     function showResultPage() {
         var n = window.navigator.msPointerEnabled || "desktop" === I ? "click" : "touchend";
         $(".restart_btn", T).one(n, function () {
-            y = 1, q = !1, x = v, k = f, E = w.q_1_1, r(T, "fadeOut", function () {
+            y = 1, q = !1, x = v, k = f, E = w.q_1_1, switchTo(T, "fadeOut", function () {
                 T.hide(), e()
             }), m(), trackEvent("click_restart_btn")
         }), $(".buy_btn", T).one(n, function () {
@@ -148,7 +151,7 @@ $(function () {
         })
     }
 
-    function r(e, n, t) {
+    function switchTo(e, n, t) {
         var i = $(e);
         i.addClass("animated " + n), $(e).one("webkitAnimationEnd animationend", function () {
             i.removeClass("animated " + n), t && t()
@@ -349,7 +352,19 @@ $(function () {
             B: {describe: "贫穷的本质"},
             C: {describe: "金钱有术"}
         }]
-    }, C = !0, y = 1, q = !1, x = v, k = f, E = w.q_1_1, B = u("dead_mask"), A = (u("ending"), $(".welcome")), T = $(".ending"), I = l(), D = document.documentElement.clientHeight <= 450 ? !0 : !1;
+    },
+        C = !0,
+        y = 1,
+        q = !1,
+        x = v,
+        k = f,
+        E = w.q_1_1,
+        B = u("dead_mask"),
+        welcomeSection = (u("ending"),
+            $(".welcome")),
+        T = $(".ending"),
+        I = l(),
+        D = document.documentElement.clientHeight <= 450 ? !0 : !1;
     setTimeout(function () {
         "weibo" === I && (document.title = "#财务包子铺# - 能闯到 17 题之后的都是人生赢家。")
     }, 1e3);
