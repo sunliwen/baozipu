@@ -1,7 +1,7 @@
 $(function () {
     function e() {
-        trackEvent(["welcomeSection", welcomeSection]);
-        switchTo(welcomeSection, "bounceInDown"), welcomeSection.show(), C && (C = !1, D ? g(["../images/buy_btn_small.png", "../images/restart_btn_small.png", "../images/out_small.png", "../images/share_info.png", "../images/share_arrow_small.png", "../images/congrats_small.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/small_ending@2x.png"]) : g(["../images/buy_btn.png", "../images/restart_btn.png", "../images/out.png", "../images/share_info.png", "../images/share_arrow.png", "../images/congrats.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/normal_ending@2x.png"]),
+        trackEvent(["welcomeSection", $welcome]);
+        switchTo($welcome, "bounceInDown"), $welcome.show(), C && (C = !1, D ? g(["../images/buy_btn_small.png", "../images/restart_btn_small.png", "../images/out_small.png", "../images/share_info.png", "../images/share_arrow_small.png", "../images/congrats_small.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/small_ending@2x.png"]) : g(["../images/buy_btn.png", "../images/restart_btn.png", "../images/out.png", "../images/share_info.png", "../images/share_arrow.png", "../images/congrats.png", "../images/plus.png", "../images/share_msg.png", "../images/compiled/normal_ending@2x.png"]),
             $.getJSON("data/data.json", function (e) {
                 $.extend(w, e.data);
             })
@@ -10,20 +10,20 @@ $(function () {
 
     function showStartPage() {
         window.navigator.msPointerEnabled || "desktop" === I ? $(".start_btn").on("click", function () {
-            switchTo(welcomeSection, "pressRelease", function () {
-                welcomeSection.hide(), $(".start_btn").data("animating", !1)
+            switchTo($welcome, "pressRelease", function () {
+                $welcome.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
                 viewQuestion(E)
             }, 100), S++, trackEvent("click_start_btn", S)
         }) : $(".start_btn").on("touchstart", function () {
-            $(this).data("animating") || (welcomeSection.addClass("pressDown"), $(this).data("canceled", !1), $(this).addClass("hover"))
+            $(this).data("animating") || ($welcome.addClass("pressDown"), $(this).data("canceled", !1), $(this).addClass("hover"))
         }).on("touchmove", function (e) {
-            e.preventDefault(), $(this).data("animating") || t(e, 10) || ($(this).data("canceled", !0).removeClass("hover"), welcomeSection.removeClass("pressDown"))
+            e.preventDefault(), $(this).data("animating") || t(e, 10) || ($(this).data("canceled", !0).removeClass("hover"), $welcome.removeClass("pressDown"))
         }).on("touchcancel", function () {
-            $(this).data("canceled", !0).removeClass("hover"), welcomeSection.removeClass("pressDown")
+            $(this).data("canceled", !0).removeClass("hover"), $welcome.removeClass("pressDown")
         }).on("touchend", function () {
-            $(this).data("canceled") || $(this).data("animating") || ($(this).data("animating", !0), welcomeSection.removeClass("pressDown"), switchTo(welcomeSection, "pressRelease", function () {
-                welcomeSection.hide(), $(".start_btn").data("animating", !1)
+            $(this).data("canceled") || $(this).data("animating") || ($(this).data("animating", !0), $welcome.removeClass("pressDown"), switchTo($welcome, "pressRelease", function () {
+                $welcome.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
                 viewQuestion(E)
             }, 100), $(this).removeClass("hover"), S++, trackEvent("click_start_btn", S))
@@ -114,7 +114,7 @@ $(function () {
         };
         c.on("touchmove", function (e) {
             e.preventDefault()
-        }).on(l, u), d(function () {
+        }).on(l, u), blockBackground(function () {
             a.appendTo(document.body), switchTo(a, "bounceInDown"), a.css("visibility", "visible")
         }), trackEvent("view_revive_question", y)
     }
@@ -127,7 +127,7 @@ $(function () {
             i.remove()
         }), e.isSuccess ? (switchTo(T, "moveInRight", function () {
             showResultPage()
-        }), T.show()) : d(function () {
+        }), T.show()) : blockBackground(function () {
             switchTo(T, "bounceInDown", function () {
                 showResultPage()
             }), T.show()
@@ -158,18 +158,18 @@ $(function () {
         })
     }
 
-    function d(e) {
+    function blockBackground(e) {
         document.documentElement.style.animationPlayState = "paused", document.documentElement.style.WebkitAnimationPlayState = "paused";
         var n = window.getComputedStyle(document.documentElement, null).getPropertyValue("background-color");
-        B.style.display = "block", B.style.backgroundColor = n, setTimeout(function () {
-            B.style.backgroundColor = "#000", setTimeout(e, 500)
+        $deadMask.style.display = "block", $deadMask.style.backgroundColor = n, setTimeout(function () {
+            $deadMask.style.backgroundColor = "#000", setTimeout(e, 500)
         }, 10)
     }
 
     function m() {
         var e = window.getComputedStyle(document.documentElement, null).getPropertyValue("background-color");
-        B.style.backgroundColor = e, setTimeout(function () {
-            B.style.display = "none", document.documentElement.style.animationPlayState = "running", document.documentElement.style.WebkitAnimationPlayState = "running"
+        $deadMask.style.backgroundColor = e, setTimeout(function () {
+            $deadMask.style.display = "none", document.documentElement.style.animationPlayState = "running", document.documentElement.style.WebkitAnimationPlayState = "running"
         }, 500)
     }
 
@@ -178,8 +178,8 @@ $(function () {
         return -1 === e.indexOf("Mobile") ? "desktop" : -1 !== e.indexOf("QQ") ? "qq" : -1 !== e.indexOf("Weibo") ? "weibo" : -1 !== e.indexOf("MicroMessenger") ? "wechat" : "undefined" != typeof WeixinJSBridge ? "wechat" : "unknown"
     }
 
-    function u(e) {
-        return document.getElementsByClassName(e)[0]
+    function getElementsByClassName(className) {
+        return document.getElementsByClassName(className)[0]
     }
 
     function _() {
@@ -359,8 +359,8 @@ $(function () {
         x = v,
         k = f,
         E = w.q_1_1,
-        B = u("dead_mask"),
-        welcomeSection = (u("ending"),
+        $deadMask = getElementsByClassName("dead_mask"),
+        $welcome = (getElementsByClassName("ending"),
             $(".welcome")),
         T = $(".ending"),
         I = l(),
