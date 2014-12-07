@@ -37,7 +37,7 @@ $(function () {
     }
 
     function viewQuestion(e, n) {
-        var t = _();
+        var t = getNextQuestion();
         $(".money", t).html(k + " 万"), $(".title", t).html("第" + y + "题"), $(".describe", t).html(e.describe), h(t);
         $(".choice", t);
         $("button[data-choice=A]", t).html(e.A.describe), $("button[data-choice=B]", t).html(e.B.describe), e.C && e.C.describe ? $("button[data-choice=C]", t).html(e.C.describe) : $("button[data-choice=C]", t).remove(), switchTo(t, "moveInRight", function () {
@@ -78,7 +78,7 @@ $(function () {
         q = !0;
         var t = Math.random();
         if (1 / 3 > t)var o = w.q_revive[0]; else if (2 / 3 > t)var o = w.q_revive[1]; else var o = w.q_revive[2];
-        var a = _();
+        var a = getNextQuestion();
         $(".money", a).remove(), $(".title", a).html("WARNING"), $(".describe", a).html(o.describe);
         var c = $(".choice", a);
         $("button[data-choice=A]", a).html(o.A.describe), $("button[data-choice=B]", a).html(o.B.describe), $("button[data-choice=C]", a).html(o.C.describe);
@@ -182,9 +182,9 @@ $(function () {
         return document.getElementsByClassName(className)[0]
     }
 
-    function _() {
-        var e = $(".question.next");
-        return e.clone().appendTo(document.body), e.removeClass("next"), e
+    function getNextQuestion() {
+        var $nextQuestion = $(".question.next");
+        return $nextQuestion.clone().appendTo(document.body), $nextQuestion.removeClass("next"), $nextQuestion
     }
 
     function g(e, n) {
