@@ -6,7 +6,6 @@ $(function () {
     }
 
     function showStartPage() {
-        console.log("showStartPage")
         window.navigator.msPointerEnabled || "desktop" === I ? $(".start_btn").on("click", function () {
             r(A, "pressRelease", function () {
                 A.hide(), $(".start_btn").data("animating", !1)
@@ -137,7 +136,6 @@ $(function () {
     }
 
     function showResultPage() {
-        console.log("showResultPage")
         var n = window.navigator.msPointerEnabled || "desktop" === I ? "click" : "touchend";
         $(".restart_btn", T).one(n, function () {
             y = 1, q = !1, x = v, k = f, E = w.q_1_1, r(T, "fadeOut", function () {
@@ -202,7 +200,11 @@ $(function () {
     }
 
     function trackEvent(e, n) {
-        window._gaq.push(["_trackEvent", "baozipu", e, n + ""])
+        if(window._gaq) {
+            window._gaq.push(["_trackEvent", "baozipu", e, n + ""]);
+        } else {
+            console.log(["_trackEvent", "baozipu", e, n + ""]);
+        }
     }
 
     var f = 60, v = 250, w = {
