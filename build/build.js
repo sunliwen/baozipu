@@ -5,13 +5,14 @@ $(function () {
         }))
     }
 
-    function n() {
+    function showStartPage() {
+        console.log("showStartPage")
         window.navigator.msPointerEnabled || "desktop" === I ? $(".start_btn").on("click", function () {
             r(A, "pressRelease", function () {
                 A.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
                 i(E)
-            }, 100), S++, b("click_start_btn", S)
+            }, 100), S++, trackEvent("click_start_btn", S)
         }) : $(".start_btn").on("touchstart", function () {
             $(this).data("animating") || (A.addClass("pressDown"), $(this).data("canceled", !1), $(this).addClass("hover"))
         }).on("touchmove", function (e) {
@@ -23,7 +24,7 @@ $(function () {
                 A.hide(), $(".start_btn").data("animating", !1)
             }), setTimeout(function () {
                 i(E)
-            }, 100), $(this).removeClass("hover"), S++, b("click_start_btn", S))
+            }, 100), $(this).removeClass("hover"), S++, trackEvent("click_start_btn", S))
         })
     }
 
@@ -39,7 +40,7 @@ $(function () {
         $(".choice", t);
         $("button[data-choice=A]", t).html(e.A.describe), $("button[data-choice=B]", t).html(e.B.describe), e.C && e.C.describe ? $("button[data-choice=C]", t).html(e.C.describe) : $("button[data-choice=C]", t).remove(), r(t, "moveInRight", function () {
             o(t), n && $(".income", t).html(n).show()
-        }), t.css("visibility", "visible"), b("view_question", y)
+        }), t.css("visibility", "visible"), trackEvent("view_question", y)
     }
 
     function o(e) {
@@ -93,7 +94,7 @@ $(function () {
                 }, 0), $("button", g).one(l, function () {
                     t.removeClass("dark"), r(g, "zoomOut", function () {
                         t.hide().removeClass("success"), i(nextQuestion, _)
-                    }), a.remove(), m(), b("click_continue_btn")
+                    }), a.remove(), m(), trackEvent("click_continue_btn")
                 })
             } else {
                 var g = $(".fail-msg", t);
@@ -104,16 +105,16 @@ $(function () {
                         t.hide().removeClass("fail")
                     }), setTimeout(function () {
                         s(e, !0)
-                    }, 220), b("click_show_ending_btn")
+                    }, 220), trackEvent("click_show_ending_btn")
                 })
             }
-            b("click_revive_choice_btn", o)
+            trackEvent("click_revive_choice_btn", o)
         };
         c.on("touchmove", function (e) {
             e.preventDefault()
         }).on(l, u), d(function () {
             a.appendTo(document.body), r(a, "bounceInDown"), a.css("visibility", "visible")
-        }), b("view_revive_question", y)
+        }), trackEvent("view_revive_question", y)
     }
 
     function s(e) {
@@ -123,26 +124,27 @@ $(function () {
         i.length ? (r(i, "moveOutLeft", function () {
             i.remove()
         }), e.isSuccess ? (r(T, "moveInRight", function () {
-            c()
+            showResultPage()
         }), T.show()) : d(function () {
             r(T, "bounceInDown", function () {
-                c()
+                showResultPage()
             }), T.show()
         })) : (r(T, "fadeIn", function () {
-            c()
+            showResultPage()
         }), T.show());
         var o = w.shareEndings[e.type];
-        document.title = o, "wechat" === I ? (T.removeClass("no-share"), O.desc = o, wechat("friend", O, P), wechat("timeline", O, P), wechat("weibo", O, P)) : "weibo" == I && (document.title = "#财务包子铺# - " + document.title), b("view_ending", e.type)
+        document.title = o, "wechat" === I ? (T.removeClass("no-share"), O.desc = o, wechat("friend", O, P), wechat("timeline", O, P), wechat("weibo", O, P)) : "weibo" == I && (document.title = "#财务包子铺# - " + document.title), trackEvent("view_ending", e.type)
     }
 
-    function c() {
+    function showResultPage() {
+        console.log("showResultPage")
         var n = window.navigator.msPointerEnabled || "desktop" === I ? "click" : "touchend";
         $(".restart_btn", T).one(n, function () {
             y = 1, q = !1, x = v, k = f, E = w.q_1_1, r(T, "fadeOut", function () {
                 T.hide(), e()
-            }), m(), b("click_restart_btn")
+            }), m(), trackEvent("click_restart_btn")
         }), $(".buy_btn", T).one(n, function () {
-            b("click_buy_btn"), setTimeout(function () {
+            trackEvent("click_buy_btn"), setTimeout(function () {
                 window.location.href = "http://www.amazon.cn/dp/B00P0RR1LO"
             }, 100)
         })
@@ -199,7 +201,7 @@ $(function () {
         return t
     }
 
-    function b(e, n) {
+    function trackEvent(e, n) {
         window._gaq.push(["_trackEvent", "baozipu", e, n + ""])
     }
 
@@ -354,9 +356,9 @@ $(function () {
             return location.origin + "/images/share_img.png"
         }, link: location.origin, desc: "能闯到 17 题之后的都是人生赢家。", title: "财务包子铺"
     }, P = function (e) {
-        "send_app_msg:confirm" === e.err_msg ? b("wechat_share_friend", "success") : "send_app_msg:cancel" === e.err_msg ? b("wechat_share_friend", "cancel") : "share_timeline:ok" === e.err_msg ? b("wechat_share_timeline", "success") : "share_timeline:cancel" === e.err_msg ? b("wechat_share_timeline", "cancel") : b("wechat_share", "unknow")
+        "send_app_msg:confirm" === e.err_msg ? trackEvent("wechat_share_friend", "success") : "send_app_msg:cancel" === e.err_msg ? trackEvent("wechat_share_friend", "cancel") : "share_timeline:ok" === e.err_msg ? trackEvent("wechat_share_timeline", "success") : "share_timeline:cancel" === e.err_msg ? trackEvent("wechat_share_timeline", "cancel") : trackEvent("wechat_share", "unknow")
     }, S = 0, G = function () {
-        D ? g(["images/logo_small.png", "images/start_btn_small.png", "images/A_small.png", "images/B_small.png", "images/C_small.png", "images/question_title_bg_small.png", "images/coin_small.png", "images/share_img.png"], e) : g(["images/logo.png", "images/start_btn.png", "images/A.png", "images/B.png", "images/C.png", "images/question_title_bg.png", "images/coin.png", "images/share_img.png"], e), "wechat" === I && (wechat("friend", O, P), wechat("timeline", O, P)), n()
+        D ? g(["images/logo_small.png", "images/start_btn_small.png", "images/A_small.png", "images/B_small.png", "images/C_small.png", "images/question_title_bg_small.png", "images/coin_small.png", "images/share_img.png"], e) : g(["images/logo.png", "images/start_btn.png", "images/A.png", "images/B.png", "images/C.png", "images/question_title_bg.png", "images/coin.png", "images/share_img.png"], e), "wechat" === I && (wechat("friend", O, P), wechat("timeline", O, P)), showStartPage()
     };
     G()
 });
