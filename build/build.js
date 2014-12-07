@@ -202,11 +202,11 @@ $(function () {
         return t
     }
 
-    function trackEvent(e, n) {
+    function trackEvent(name, param) {
         if(window._gaq) {
-            window._gaq.push(["_trackEvent", "baozipu", e, n + ""]);
+            window._gaq.push(["_trackEvent", "baozipu", name, param + ""]);
         } else {
-            console.log(["_trackEvent", "baozipu", e, n + ""]);
+            console.log(["_trackEvent", "baozipu", name, param + ""]);
         }
     }
 
